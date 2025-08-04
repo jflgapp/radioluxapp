@@ -5,11 +5,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     Abre Chrome (el navegador con el logo rojo-verde-amarillo-azul)
 
-    Escribe la dirección de RadioLux en la barra de arriba:
-    text
-
-    www.radiolux.com
-
+    ingresa a cualquier pagina de nuestras radio (radio Destello, Stereo Granadilla, GospelFM) y ubica el boton de la aplicacion
     Espera a que cargue la aplicación (verás las radios y el blog)
 
     Toca los tres puntitos ⋮ en la esquina superior derecha
@@ -25,10 +21,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     Abre Safari (el navegador con el logo azul)
 
-    Escribe la dirección de RadioLux:
-    text
-
-    www.radiolux.com
+    ingresa a cualquier pagina de nuestras radio (radio Destello, Stereo Granadilla, GospelFM) y ubica el boton de la aplicacion
 
     Toca el ícono de compartir □ con flecha ↑ en la parte inferior
 
@@ -45,11 +38,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     Abre Chrome o Firefox
 
-    Visita RadioLux:
-    text
-
-    www.radiolux.com
-
+    ingresa a cualquier pagina de nuestras radio (radio Destello, Stereo Granadilla, GospelFM) y ubica el boton de la aplicacion
     Mira en la barra de direcciones:
 
         En Chrome: Aparecerá un ícono de instalación 🔧 o ➕ al final
@@ -62,7 +51,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     ¡Listo! La app aparecerá en tu escritorio o menú de aplicaciones
 
-[Imagen: Captura mostrando el ícono de instalación en Chrome para computadoras]
+
 🆘 ¿Tienes problemas? Soluciones rápidas:
 
     Si no ves la opción de instalar:
@@ -106,10 +95,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
 Contáctanos en:
 
-    WhatsApp: +123 456 7890
+    Email: radiodestello1@yahoo.com
 
-    Email: soporte@radiolux.com
-
-    Facebook: facebook.com/RadioLuxApp
 
 ¡Disfruta de tus radios favoritas y las últimas noticias con RadioLux App! 🎧📻✨
