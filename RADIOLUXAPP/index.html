@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RadioLux App</title>
+    <meta name="theme-color" content="#0A1929">
+    <link rel="manifest" href="app.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #007FFF;
+            --primary-light: #66B2FF;
+            --primary-dark: #0059B2;
+            --secondary: #00D4FF;
+            --background: #0A1929;
+            --surface: #001E3C;
+            --surface-light: #132F4C;
+            --on-primary: #FFFFFF;
+            --on-background: #E6F1FF;
+            --on-surface: #CCD6F6;
+            --error: #FF5252;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--background) 0%, #071A2F 100%);
+            color: var(--on-background);
+            min-height: 100vh;
+            padding-bottom: 70px;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--surface);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(102, 178, 255, 0.1);
+        }
+        
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .app-logo-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+        
+        .back-btn {
+            background: rgba(102, 178, 255, 0.1);
+            border: none;
+            color: var(--primary-light);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(102, 178, 255, 0.2);
+            transform: translateX(-3px);
+        }
+        
+        .section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: var(--on-background);
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        /* Menú Principal */
+        .stations-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .station-item {
+            background-color: var(--surface);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(102, 178, 255, 0.1);
+        }
+        
+        .station-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 127, 255, 0.2);
+            border-color: rgba(102, 178, 255, 0.3);
+        }
+        
+        .station-logo {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: var(--surface-light);
+            color: var(--primary-light);
+        }
+        
+        .station-info {
+            padding: 18px;
+            flex: 1;
+        }
+        
+        .station-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--on-background);
+        }
+        
+        .station-genre {
+            font-size: 0.95rem;
+            color: var(--primary-light);
+            opacity: 0.9;
+        }
+        
+        .station-play {
+            padding: 0 20px;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        /* Reproductor de Radio */
+        .radio-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 178, 255, 0.15);
+        }
+        
+        .radio-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .radio-logo-large {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--surface-light) 0%, var(--surface) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+            border: 3px solid rgba(102, 178, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 127, 255, 0.2);
+        }
+        
+        .station-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--on-background);
+            width: 100%;
+            padding: 10px 0;
+            border-top: 1px solid rgba(102, 178, 255, 0.1);
+            border-bottom: 1px solid rgba(102, 178, 255, 0.1);
+        }
+        
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .play-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--on-primary);
+            border: none;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 127, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 127, 255, 0.4);
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            padding: 0 10px;
+        }
+        
+        .volume-icon {
+            color: var(--primary-light);
+            font-size: 1.2rem;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--surface-light);
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 127, 255, 0.5);
+        }
+        
+        .status-indicator {
+            margin-top: 15px;
+            padding: 5px 15px;
+            background: rgba(0, 127, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+        
+        .status-indicator.connecting .dot {
+            background-color: #FFC107;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Sección de Blog */
+        .blog-container {
+            margin-top: 20px;
+        }
+        
+        .blog-posts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        .post-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(102, 178, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 127, 255, 0.25);
+        }
+        
+        .post-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--surface) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+            font-size: 3rem;
+        }
+        
+        .post-content {
+            padding: 25px;
+        }
+        
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--on-background);
+            font-weight: 600;
+        }
+        
+        .post-excerpt {
+            color: var(--on-surface);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary-light);
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(102, 178, 255, 0.1);
+            padding-top: 15px;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 127, 255, 0.3);
+        }
+        
+        /* Navegación */
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            display: flex;
+            padding: 12px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(102, 178, 255, 0.1);
+            z-index: 100;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0;
+            color: var(--on-surface);
+            text-decoration: none;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+        
+        .nav-item i {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-item.active i {
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 127, 255, 0.5);
+        }
+        
+        .nav-item span {
+            font-weight: 500;
+        }
+        
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 127, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Estilos responsivos */
+        @media (min-width: 768px) {
+            body {
+                max-width: 800px;
+                margin: 0 auto;
+                padding-bottom: 80px;
+                background: linear-gradient(135deg, #0A1929 0%, #071A2F 100%);
+            }
+            
+            .blog-posts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .radio-logo-large {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .nav {
+                max-width: 500px;
+                margin: 0 auto;
+                border-radius: 20px 20px 0 0;
+                bottom: 20px;
+                padding: 15px;
+                box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.4);
+            }
+            
+            .station-item {
+                margin-bottom: 25px;
+            }
+        }
+        
+        /* Animación de olas en el fondo */
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" opacity="0.03"><path d="M0,320L48,309.3C96,299,192,277,288,261.3C384,245,480,235,576,229.3C672,224,768,224,864,208C960,192,1056,160,1152,149.3C1248,139,1344,149,1392,154.7L1440,160L1440,800L1392,800C1344,800,1248,800,1152,800C1056,800,960,800,864,800C768,800,672,800,576,800C480,800,384,800,288,800C192,800,96,800,48,800L0,800Z" fill="%23007FFF"/></svg>');
+            background-size: cover;
+            background-position: bottom;
+            z-index: -1;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="wave-bg"></div>
+    
+    <header>
+        <div class="header-logo-container">
+            <!-- Espacio para el logo de la aplicación -->
+            <div class="app-logo-placeholder" id="appLogo">
+            <img src="img/logo.jpeg" alt="Logo RadioLux" style="width: 100%; height: 100%; border-radius: 8px;">
+        </div>
+            <div class="logo">RadioLux App</div>
+        </div>
+        <button class="back-btn" id="backBtn" style="display: none;">
+            <i class="fas fa-arrow-left"></i> Volver
+        </button>
+    </header>
+    
+    <!-- Sección Principal (Lista de Radios) -->
+    <section id="homeSection" class="section active">
+        <h1>Estaciones Disponibles</h1>
+        <ul class="stations-list" id="stationsList">
+            <!-- Las estaciones se cargarán dinámicamente -->
+        </ul>
+    </section>
+    
+    <!-- Sección de Reproductor -->
+    <section id="playerSection" class="section">
+        <div class="loading" id="playerLoading">
+            <div class="spinner"></div>
+        </div>
+        <div class="radio-player" id="playerContent" style="display: none;">
+            <div class="radio-logo-container">
+                <div class="radio-logo-large" id="radioLogoLarge">
+                    <i class="fas fa-broadcast-tower"></i>
+                </div>
+                <div class="station-title" id="stationTitle">Nombre de la Radio</div>
+            </div>
+            <div class="player-controls">
+                <div class="control-buttons">
+                    <button class="play-btn" id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+                <div class="volume-control">
+                    <span class="volume-icon"><i class="fas fa-volume-down"></i></span>
+                    <input type="range" min="0" max="1" step="0.01" value="0.7" class="volume-slider" id="volumeSlider">
+                    <span class="volume-icon"><i class="fas fa-volume-up"></i></span>
+                </div>
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="dot"></span> <span id="statusText">Conectando...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección de Blog -->
+    <section id="blogSection" class="section">
+        <h1>Blog de RadioLux</h1>
+        <div class="loading" id="blogLoading">
+            <div class="spinner"></div>
+        </div>
+        <div class="blog-container" id="blogContainer" style="display: none;">
+            <div class="blog-posts" id="blogPosts">
+                <!-- Las entradas del blog se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Navegación Inferior -->
+    <nav class="nav">
+        <a href="#" class="nav-item active" data-section="homeSection">
+            <i class="fas fa-radio"></i>
+            <span>Radios</span>
+        </a>
+        <a href="#" class="nav-item" data-section="blogSection">
+            <i class="fas fa-blog"></i>
+            <span>Blog</span>
+        </a>
+    </nav>
+
+    <script>
+        // Datos de las estaciones de radio
+        const stations = [
+            
+            {
+                id: 1,
+                name: "Radio Destello",
+                streamUrl: "https://stream.zeno.fm/k7e056607qzuv",
+                genre: "Variedades, Musica Cristiana.",
+                color: "#24052B",
+                logo: "img/destello.png"
+            },
+            {
+                id: 2,
+                name: "Stereo Granadilla",
+                streamUrl: "https://stream.zeno.fm/a4w6hqkde2zuv",
+                genre: "Música Popular Cristiana Urbana y Tropical.",
+                color: "#FFFFFF",
+                logo: "img/granadilla.png"
+            },
+            {
+                id: 3,
+                name: "Gospel FM",
+                streamUrl: "https://stream.zeno.fm/nda4uyd45dftv",
+                genre: "Música Cristiana en Ingles.",
+                color: "#080808",
+                logo: "img/gospel.png"
+            }
+            
+        ];
+        
+        // Datos de ejemplo para el blog
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Actualización de RadioLux App",
+                excerpt: "A partir del 4 de Agosto, RadioLux App recibe una actualización importante; en esta ocación la aplicación estara siendo administrada al 100% por JFLG Broadcasting Sistem sin plataformas de terceros.",
+                date: "4 de Agosto de 2025",
+                author: "admin"
+            },
+            {
+                id: 2,
+                title: "Que trae de Nuevo RadioLux App",
+                excerpt: "La nueva actualización de RadioLux App trae una nueva Interfaz Grafica la cual hace intuitiva la navegación por nuestras radios; además de contar con  una seccion de blog la cual usaremos para informar sobre nuestra programación e información de interes.",
+                date: "4 de Agosto de 2025",
+                author: "admin"
+            },
+            {
+                id: 3,
+                title: "Grupo Radial Tendenia Digital Cumple 2 años",
+                excerpt: "Radio Destello y Stereo Granadilla celebran junto a las emisoras asociadas el segundo aniversario de GRTD agradeciendo a Dios por un años mas de operaciones de este importante consorcio de Radios Guatemaltecas.",
+                date: "4 de Agosto de 2025",
+                author: "admin"
+            },
+            {
+                id: 4,
+                title: "UNA VOZ CLAMA EN EL DESIERTO El Primer programa estandar de nuestras radios",
+                excerpt: "Ahora en Radio Destello, Stereo Granadilla y Gospel FM podras escuchar palabra de Dios Impactante por este espacio. publicaremos los horarios para cada emisora por este medio.",
+                date: "4 de Agosto de 2025",
+                author: "admin"
+            }
+        ];
+        
+        // Variables globales
+        let currentStation = null;
+        let audio = null;
+        let isPlaying = false;
+        
+        // DOM Elements
+        const stationsList = document.getElementById('stationsList');
+        const homeSection = document.getElementById('homeSection');
+        const playerSection = document.getElementById('playerSection');
+        const blogSection = document.getElementById('blogSection');
+        const backBtn = document.getElementById('backBtn');
+        const playerContent = document.getElementById('playerContent');
+        const playerLoading = document.getElementById('playerLoading');
+        const radioLogoLarge = document.getElementById('radioLogoLarge');
+        const stationTitle = document.getElementById('stationTitle');
+        const playBtn = document.getElementById('playBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const blogContainer = document.getElementById('blogContainer');
+        const blogLoading = document.getElementById('blogLoading');
+        const blogPostsContainer = document.getElementById('blogPosts');
+        const navItems = document.querySelectorAll('.nav-item');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        
+        // Cargar estaciones de radio
+        function loadStations() {
+            stationsList.innerHTML = '';
+            
+            stations.forEach(station => {
+                const li = document.createElement('li');
+                li.className = 'station-item';
+                li.innerHTML = `
+                    <div class="station-logo">
+                        <img src="${station.logo}" alt="${station.name}" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <div class="station-info">
+                        <div class="station-name">${station.name}</div>
+                        <div class="station-genre">${station.genre}</div>
+                    </div>
+                    <div class="station-play">
+                        <i class="fas fa-play"></i>
+                    </div>
+                `;
+                
+                li.addEventListener('click', () => {
+                    openPlayer(station);
+                });
+                
+                stationsList.appendChild(li);
+            });
+        }
+        
+        // Oscurecer color para gradientes
+        function darkenColor(color, percent) {
+            const num = parseInt(color.replace("#",""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) - amt;
+            const G = (num >> 8 & 0x00FF) - amt;
+            const B = (num & 0x0000FF) - amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + 
+                   (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + 
+                   (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+        }
+        
+        // Cargar entradas del blog
+        function loadBlogPosts() {
+            blogPostsContainer.innerHTML = '';
+            
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card';
+                postElement.innerHTML = `
+                    <div class="post-image">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="fas fa-user"></i> ${post.author}</span>
+                        </div>
+                        <a href="#" class="read-more">
+                            Leer más <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                
+                blogPostsContainer.appendChild(postElement);
+            });
+            
+            // Simular carga de datos
+            setTimeout(() => {
+                blogLoading.style.display = 'none';
+                blogContainer.style.display = 'block';
+            }, 800);
+        }
+        
+        // Abrir reproductor de radio
+        function openPlayer(station) {
+            currentStation = station;
+            isPlaying = false;
+            
+            // Actualizar UI
+            stationTitle.textContent = station.name;
+            radioLogoLarge.innerHTML = `
+    <div class="station-logo">
+        <img src="${station.logo}" alt="${station.name}" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+`;
+            radioLogoLarge.style.background = `linear-gradient(135deg, ${station.color} 0%, ${darkenColor(station.color, 30)} 100%)`;
+            
+            // Mostrar sección
+            playerLoading.style.display = 'flex';
+            playerContent.style.display = 'none';
+            playerSection.classList.add('active');
+            homeSection.classList.remove('active');
+            blogSection.classList.remove('active');
+            
+            // Actualizar navegación
+            navItems.forEach(item => item.classList.remove('active'));
+            backBtn.style.display = 'block';
+            
+            // Actualizar estado
+            updateStatus('Selecciona "Reproducir" para conectar');
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            
+            // Preparar el reproductor
+            setTimeout(() => {
+                playerLoading.style.display = 'none';
+                playerContent.style.display = 'flex';
+            }, 500);
+        }
+        
+        // Actualizar estado de conexión
+        function updateStatus(message, isConnecting = false) {
+            statusText.textContent = message;
+            if (isConnecting) {
+                statusIndicator.classList.add('connecting');
+            } else {
+                statusIndicator.classList.remove('connecting');
+            }
+        }
+        
+        // Iniciar o detener la transmisión
+        function togglePlay() {
+            if (isPlaying) {
+                // Detener completamente la transmisión
+                stopAudio();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                updateStatus('Transmisión detenida');
+                isPlaying = false;
+            } else {
+                // Iniciar una nueva transmisión
+                startAudio();
+                playBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                updateStatus('Conectando...', true);
+                isPlaying = true;
+            }
+        }
+        
+        // Detener completamente la transmisión
+        function stopAudio() {
+            if (audio) {
+                audio.pause();
+                audio.src = "";
+                audio.load();
+                audio = null;
+            }
+        }
+        
+        // Iniciar una nueva transmisión
+        function startAudio() {
+            // Detener cualquier transmisión previa
+            stopAudio();
+            
+            // Crear nuevo objeto de audio
+            audio = new Audio();
+            audio.src = currentStation.streamUrl;
+            audio.volume = volumeSlider.value;
+            
+            // Manejar eventos de audio
+            audio.addEventListener('playing', () => {
+                updateStatus('Transmisión en vivo');
+            });
+            
+            audio.addEventListener('waiting', () => {
+                updateStatus('Conectando...', true);
+            });
+            
+            audio.addEventListener('error', (e) => {
+                console.error("Error en el reproductor:", e);
+                updateStatus('Error de conexión');
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                isPlaying = false;
+            });
+            
+            // Intentar reproducir
+            audio.play().catch(e => {
+                console.error("Error al reproducir:", e);
+                updateStatus('Error al conectar');
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                isPlaying = false;
+            });
+        }
+        
+        // Establecer volumen
+        function setVolume() {
+            if (audio) {
+                audio.volume = volumeSlider.value;
+            }
+        }
+        
+        // Navegación entre secciones
+        function navigateTo(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Mostrar/ocultar botón de retroceso
+            backBtn.style.display = (sectionId !== 'homeSection') ? 'block' : 'none';
+            
+            // Actualizar navegación
+            navItems.forEach(item => {
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        
+        // Event Listeners
+        backBtn.addEventListener('click', () => {
+            navigateTo('homeSection');
+            
+            // Detener la reproducción al volver
+            stopAudio();
+            isPlaying = false;
+        });
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = item.dataset.section;
+                
+                // Si estamos en el blog, cargar los posts
+                if (sectionId === 'blogSection') {
+                    blogLoading.style.display = 'flex';
+                    blogContainer.style.display = 'none';
+                    loadBlogPosts();
+                }
+                
+                navigateTo(sectionId);
+            });
+        });
+        
+        // Configuración para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado con éxito: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar ServiceWorker: ', error);
+                    });
+            });
+        }
+        
+        // Solicitar permiso para notificaciones push
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Permiso para notificaciones concedido');
+                    }
+                });
+            }
+        }
+        
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStations();
+            requestNotificationPermission();
+            
+            // Asignar eventos a los botones
+            playBtn.addEventListener('click', togglePlay);
+            volumeSlider.addEventListener('input', setVolume);
+            
+            // Simular notificación
+            setTimeout(() => {
+                if (Notification.permission === 'granted') {
+                    new Notification('RadioLux App', {
+                        body: '¡Bienvenido a la mejor experiencia de radio en línea!',
+                        icon: 'https://cdn-icons-png.flaticon.com/512/4474/4474936.png'
+                    });
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
