@@ -58,7 +58,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
         Actualiza tu navegador
 
-        Asegúrate de estar en www.radiolux.com
+        Asegúrate de estar en el enlace al cual te redirigio la pagina
 
         Reinicia tu teléfono o computadora
 
