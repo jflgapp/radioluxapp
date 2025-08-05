@@ -1,4 +1,4 @@
-Instrucciones para Instalar RadioLux App en tu Dispositivo
+# Instrucciones para Instalar RadioLux App en tu Dispositivo
 
 ¡Hola! Estas instrucciones te guiarán paso a paso para instalar RadioLux App en tu teléfono o computadora. Es muy fácil y no necesitas ser experto en tecnología. Solo sigue estos pasos:
 
