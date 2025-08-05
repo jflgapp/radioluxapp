@@ -1,6 +1,7 @@
 Instrucciones para Instalar RadioLux App en tu Dispositivo
 
 ¡Hola! Estas instrucciones te guiarán paso a paso para instalar RadioLux App en tu teléfono o computadora. Es muy fácil y no necesitas ser experto en tecnología. Solo sigue estos pasos:
+
 📱 Para teléfonos Android (como Samsung, Xiaomi, Motorola)
 
     Abre Chrome (el navegador con el logo rojo-verde-amarillo-azul)
@@ -15,8 +16,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
     Confirma tocando "Instalar" o "Agregar"
 
     ¡Listo! Verás el ícono de RadioLux en tu pantalla de inicio
-
-[Imagen: Captura de pantalla mostrando el menú de Chrome con la opción "Instalar aplicación"]
+    
 🍎 Para iPhones y iPads (Apple)
 
     Abre Safari (el navegador con el logo azul)
@@ -33,8 +33,8 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     ¡Listo! Encontrarás el ícono en tu pantalla de inicio
 
-[Imagen: Captura de pantalla mostrando el menú "Agregar a inicio" en iPhone]
-💻 Para computadoras (Windows o Mac)
+
+💻 Para computadoras (Windows, Mac o Linux)
 
     Abre Chrome o Firefox
 
@@ -90,7 +90,7 @@ Instrucciones para Instalar RadioLux App en tu Dispositivo
 
     Se actualiza automáticamente
 
-[Imagen: Comparación entre usar el navegador vs. la app instalada]
+
 📞 ¿Aún necesitas ayuda?
 
 Contáctanos en:
